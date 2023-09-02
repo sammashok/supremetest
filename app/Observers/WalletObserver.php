@@ -21,13 +21,15 @@ class WalletObserver
      */
     public function created(Wallet $wallet): void
     {
-        Deposit::create([
-            'reference' => uniqid('spd'),
-            'wallet_id' => $wallet->id,
-            'amount'    => $wallet->balance,
-            'paid_at'   => now(),
-            'channel'   => 'paystack'
-        ]);
+        Deposit::withoutEvents(function () use ($wallet) {
+            Deposit::create([
+                'reference' => uniqid('spd'),
+                'wallet_id' => $wallet->id,
+                'amount'    => $wallet->balance,
+                'paid_at'   => now(),
+                'channel'   => 'paystack'
+            ]);
+        });
     }
 
     /**
