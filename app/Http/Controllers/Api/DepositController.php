@@ -14,12 +14,7 @@ class DepositController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'wallet_id' => 'required',
-            'amount'    => 'decimal:0,2|min:100'
-        ]);
-
-        Deposit::create($validated);
+        Deposit::create($request->validate(['wallet_id' => 'required', 'amount' => 'decimal:0,2|min:100']));
 
         return Response::api('Your wallet has been successfully funded');
     }
