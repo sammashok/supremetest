@@ -135,7 +135,6 @@
                 </div>
                 <div class="modal-body">
                     <form x-data="{ min : 1000 }" x-submit action="{{ route('api.wallets.store') }}" method="POST"
-                          @finish="location.reload()"
                     >
                         <div class="mb-10">
                             <label for="type" class="form-label">Wallet Type</label>

@@ -138,13 +138,16 @@
                     >
                         <div class="mb-10">
                             <div>
-                                <label class="form-label">From wallet</label>
-                                <input class="form-control" value="{{ $wallet->reference.' ('.$wallet->type->name }})" disabled>
-                                <input type="hidden" name="from_wallet_id" value="{{ $wallet->id }}">
+                                <label class="form-label">From wallet (Reference Id)</label>
+                                <select id="type" name="from_reference" class="form-control form-select form-select-solid form-select-lg fw-semibold"  data-control="select2" data-hide-search="true" required>
+                                    <option value="{{ $wallet->reference }}">
+                                        {{ $wallet->reference.' ('.$wallet->type->name }})
+                                    </option>
+                                </select>
                             </div>
                             <div>
-                                <label for="ref" class="form-label">To wallet</label>
-                                <input id="ref" class="form-control" name="reference" placeholder="Input wallet reference Id" required>
+                                <label for="ref" class="form-label">To wallet (Reference Id)</label>
+                                <input id="ref" class="form-control" name="to_reference" placeholder="Input wallet reference Id" required>
                             </div>
                         </div>
                         <div class="mb-10">
