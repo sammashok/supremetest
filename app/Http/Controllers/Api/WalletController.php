@@ -15,9 +15,11 @@ class WalletController extends Controller
      */
     public function store(StoreWalletRequest $request)
     {
-        Wallet::create($request->validated());
+        $wallet = user()->wallets()->create($request->validated());
 
-        return Response::api('Wallet Created Successfully');
+        return Response::api('Wallet Created Successfully', headers: [
+            'x-location' => route('wallets.show', $wallet)
+        ]);
     }
 
     /**
