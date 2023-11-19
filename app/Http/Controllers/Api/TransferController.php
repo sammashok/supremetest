@@ -16,13 +16,12 @@ class TransferController extends Controller
      */
     public function store(StoreTransferRequest $request)
     {
-        $to_wallet = Wallet::where('reference',$request->validated('reference'))->first();
-        Transfer::create([
+        Transfer::make([
             'initiated_at'   => now(),
             'amount'         => $request->validated('amount'),
-            'from_wallet_id' => $request->validated('from_wallet_id'),
-            'to_wallet_id'   => $to_wallet->id
-        ]);
+            'from_wallet_id' => Wallet::where('reference', $request->validated('from_reference'))->value('id'),
+            'to_wallet_id'   => Wallet::where('reference', $request->validated('to_reference'))->value('id')
+        ])->saveOrFail();
 
         return Response::api('Transfer Successful');
     }

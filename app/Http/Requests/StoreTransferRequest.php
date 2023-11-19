@@ -6,6 +6,7 @@ use App\Models\Transfer;
 use App\Models\Wallet;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class StoreTransferRequest extends FormRequest
 {
@@ -25,12 +26,13 @@ class StoreTransferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'from_wallet_id' => ['required',
-                Rule::prohibitedIf(! Wallet::where('id', $this->from_wallet_id)->first()->user->is(user())
-            )],
-            'reference' => 'required|exists:wallets',
-            'amount'    => 'required|decimal:0,2|min:100'
+            'from_reference' => ['required', 'exists:wallets,reference',
+                Rule::prohibitedIf(
+                    ! Wallet::where('reference', $this->from_reference)->first()->user->is(user())
+                ),
+            ],
+            'to_reference' => 'required|exists:wallets,reference|different:from_reference',
+            'amount'       => ['required', 'decimal:0,2', 'min:100', 'max:'. Wallet::where('reference', $this->from_reference)->first()->balance],
         ];
     }
-
 }
